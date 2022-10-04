@@ -3,10 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ImageMapComponent } from './feature/image-map/image-map.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ImageMapComponent
   ],
   imports: [
     BrowserModule,
