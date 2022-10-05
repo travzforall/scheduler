@@ -1,0 +1,61 @@
+<div class="w-1/2 mx-auto">
+    <select class="form-select form-select-lg mb-3
+    appearance-none
+    block
+    w-full
+    px-4
+    py-2
+    text-xl
+    font-normal
+    text-gray-700
+    bg-white bg-clip-padding bg-no-repeat
+    border border-solid border-gray-300
+    rounded
+    transition
+    ease-in-out
+    m-0
+    mt-5
+    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label=".form-select-lg example">
+      <option selected>Choose a Level</option>
+      <option value="LL">Lower Level</option>
+      <option value="17">Floor 17</option>
+      <option value="18">Floor 18</option>
+      <option value="19">Floor 19</option>
+      <option value="20">Floor 20</option>
+      <option value="21">Floor 21</option>
+      <option value="22">Floor 22</option>
+  </select>
+  </div>
+  
+  
+  <div class="flex justify-around">
+    <div class="view-window p-2 h-[675px]  border-2 border-green-700">
+    <app-image-map [src]="image" [coordinates]="coordinates" (onClick)="getClick($event)" ></app-image-map>
+  
+    </div>
+  <div class="view-details ">
+    
+    <div >
+      <table  class="table  overflow-y-scroll">
+        <!-- head -->
+        <thead>
+          <tr>
+            <th>Room #</th>
+            <th>Name</th>
+            <th>Status</th> 
+          </tr>
+        </thead>
+        <tbody  style="height: 100px; overflow-y: scroll;" class="text-black">
+          <!-- row 1 -->
+          <tr (click)="goToRoom(item['room_number'])"  *ngFor="let item of coordinates">
+            <td class="bg-green-300 font-bold">{{item.room_number }}</td>
+            <td class="bg-green-300">{{item.room_type }}</td>
+            <td class="bg-green-300"><span class="bg-green-500 p-2 rounded-full">Open</span></td> 
+          </tr> 
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
+  </div>
+  
