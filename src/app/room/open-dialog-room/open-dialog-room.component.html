@@ -1,0 +1,108 @@
+<form class="bg-slate-200 p-3 text-black" action="">
+    <h2 class="text-center mt-3 text-2xl">Reserve Room</h2>
+    
+   <label class="flex mx-auto my-2  items-center" for="roomNumber"><span class="font-bold  w-20">Room:</span>  <select id="roomNumber" class="form-select form-select-lg ml-3
+    appearance-none
+    block 
+    w-full
+    px-4
+    py-2
+    text-xl
+    font-normal
+    text-gray-700
+    bg-white bg-clip-padding bg-no-repeat
+    border border-solid border-gray-300
+    rounded
+    transition
+    ease-in-out
+
+    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label=".form-select-lg example">
+      <option value="today" selected>October 4 (Today)</option>
+      <option value="5">October 5</option> 
+      <option value="6">October 6</option> 
+      <option value="7">October 7</option> 
+      <option value="8">October 8</option> 
+      <option value="9">October 9</option> 
+      <option value="10">October 10</option> 
+  </select></label>
+
+  <label class="flex mx-auto my-2  items-center" for="fromTime"><span class="font-bold w-20">From:</span>  <select id="fromTime" class="form-select form-select-lg ml-3
+    appearance-none
+    block 
+    w-full
+    px-4
+    py-2
+    text-xl
+    font-normal
+    text-gray-700
+    bg-white bg-clip-padding bg-no-repeat
+    border border-solid border-gray-300
+    rounded
+    transition
+    ease-in-out
+
+    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label=".form-select-lg example">
+      <option value="today" selected>Select Time</option>
+      <option *ngFor="let time_slot of time" [value]="time_slot.name">{{time_slot.name}}</option>  
+  </select></label>
+
+  <label class="flex mx-auto my-2  items-center" for="duration"><span class="font-bold w-20">Duration:</span>  <select id="duration" class="form-select form-select-lg ml-3
+    appearance-none
+    block 
+    w-full
+    px-4
+    py-2
+    text-xl
+    font-normal
+    text-gray-700
+    bg-white bg-clip-padding bg-no-repeat
+    border border-solid border-gray-300
+    rounded
+    transition
+    ease-in-out
+
+    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label=".form-select-lg example">
+      <option value="today" selected>Select Duration</option>
+      <option  [value]="15">15 minutes</option>  
+      <option  [value]="30">30 minutes</option>  
+      <option  [value]="45">45 minutes</option>  
+      <option  [value]="60">1 hour</option>  
+      <option  [value]="75">1 hour 15 minutes</option>  
+      <option  [value]="90">1 hour 30 minutes</option>  
+      <option  [value]="105">1 hour 45 minutes</option>  
+      <option  [value]="120">2 hours</option>  
+      <option  [value]="135">2 hours 15 minutes</option>  
+      <option  [value]="150">2 hours 30 minutes</option>  
+      <option  [value]="165">2 hours 45 minutes</option>  
+      <option  [value]="180">3 hours</option>  
+      <option  [value]="195">3 hours 15 minutes</option>  
+      <option  [value]="210">3 hours 30 minutes</option>  
+  </select></label>
+
+
+  <label class="flex mx-auto my-2  items-center" for="requestType"><span class="font-bold w-20">Type:</span>  <select id="requestType" class="form-select form-select-lg ml-3
+    appearance-none
+    block 
+    w-full
+    px-4
+    py-2
+    text-xl
+    font-normal
+    text-gray-700
+    bg-white bg-clip-padding bg-no-repeat
+    border border-solid border-gray-300
+    rounded
+    transition
+    ease-in-out
+
+    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label=".form-select-lg example">
+      <option value="today" selected>Reservation Type</option>
+      <option  [value]="'Class'">Class/ Lecture</option>  
+      <option  [value]="'Meeting'">Meeting</option>  
+      <option  [value]="'Event'">Event</option>  
+      <option  [value]="'Maintainence'">Maintainence</option>   
+      <option  [value]="'Workshop'">Workshop</option>   
+  </select></label>
+
+  <div class="text-center"><button class="btn btn-success">Make Reservation</button></div>
+</form>

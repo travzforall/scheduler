@@ -1,0 +1,45 @@
+<div *ngIf="level | async as levelDetails; else loading">
+ 
+ 
+    <div class="flex justify-around">
+      <div class="view-window p-2 h-[675px] border-2 border-green-700">
+        <app-image-map
+          [src]="image"
+          [activeRooms]="activeRooms"
+          [coordinates]="coordinates"
+          (onClick)="getClick($event)"
+        ></app-image-map>
+      </div>
+      <div class="view-details">
+        <div>
+          <table class="table overflow-y-scroll">
+            
+            <thead>
+              <tr>
+                <th>Room #</th>
+                <th>Name</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody style="height: 100px; overflow-y: scroll" class="text-black">
+        
+      <tr (click)="goToRoom(item['id'])"   *ngFor="let item of levelDetails['_room_of_level']">
+
+
+                <td [ngStyle]="getCoordinateStyle(item.id)" class="font-bold">{{ item.room_number }}</td>
+                <td [ngStyle]="getCoordinateStyle(item.id)"  >{{ item.room_name }}</td> 
+                <td [ngStyle]="getCoordinateStyle(item.id)" >
+                  <span *ngIf="!isActive(item.id)" class="bg-green-500 p-2 rounded-full">Open</span>
+                </td>
+              </tr>  
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #loading> 
+    <app-loading></app-loading>
+  </ng-template>
+  

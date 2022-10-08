@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { OpenDialogRoomComponent } from '../open-dialog-room/open-dialog-room.component';
+import { RoomServiceService } from '../room-service.service';
 
 export enum STATUS {
   OPEN = "Open",
@@ -14,10 +19,38 @@ export enum STATUS {
   styleUrls: ['./view-room.component.scss']
 })
 export class ViewRoomComponent implements OnInit {
+  routeSub: any;
+  room: any;
+  
+  requestForm = new FormGroup({
+    room: new FormControl(''),
+    start_time: new FormControl(''),
+    duration: new FormControl(''),
+    type: new FormControl(''),
+    purpose: new FormControl(''),
+  });
+ 
 
-  constructor() { }
+  openDialog() {
+    const dialogRef = this.dialog.open(OpenDialogRoomComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+
+
+
+
+  constructor(public dialog: MatDialog,  private route: ActivatedRoute, private roomService: RoomServiceService) {
+    this.routeSub = this.route.params.subscribe(params => { 
+      this.room = params['id'] 
+      });
+   }
 
   ngOnInit(): void {
+    console.log(this.room)
   }
 
   time = [
@@ -64,6 +97,13 @@ export class ViewRoomComponent implements OnInit {
     {name: '7:00', status: STATUS.OPEN}
   ]
 
+  postRequest(data: any) {
+    this.roomService.postRequest(data).subscribe(e => {
+      console.log(e)
+    })
+  }
+
+
   getClassOf(val: string) {
 
     switch(val) {
@@ -87,3 +127,4 @@ export class ViewRoomComponent implements OnInit {
 
 
 
+ 

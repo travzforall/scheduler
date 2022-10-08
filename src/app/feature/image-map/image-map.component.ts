@@ -17,25 +17,34 @@ export class ImageMapComponent implements OnInit {
   @Input()
   canEdit: boolean = false;
 
+  @Input()
+  activeRooms: number[] = [];
+
   @Output('onClick')
   onClick: EventEmitter<ImageMapCoordinate> = new EventEmitter();
 
   constructor() { }
 
-  ngOnInit() {  }
+  ngOnInit() { 
+   }
 
-  getCoordinateStyle(coordinate: ImageMapCoordinate): object {
+  getCoordinateStyle(coordinate: any): object {  
     return {
       top: `${coordinate.y}px`,
       left: `${coordinate.x}px`,
       height: `${coordinate.height}px`,
       width: `${coordinate.width}px`,
-      background: `rgba(0, 0, 0, 0.50)`
+      background: this.isActive(coordinate.id)?  'rgba(255, 0, 0, 0.50)': 'rgba(0, 255, 0, 0.50)'
     };
   }
 
   onAreaClick(coordinate: any) {
     this.onClick.emit(coordinate);
+  }
+
+
+  isActive(room: any) {
+    return this.activeRooms.includes(room)
   }
 
   onAreaContext(e: MouseEvent, coordinate: ImageMapCoordinate) {
@@ -77,7 +86,7 @@ export class ImageMapCoordinate {
   width: number = 100
   height: number = 100
   room_type?: string
-  room_number?: string
+  room?: number
 
   constructor(init?: Partial<ImageMapCoordinate>) {
     Object.assign(this, init);
