@@ -1,188 +1,163 @@
-
-
-
 <section class="flex w-full justify-around mx-auto bg-rose-900 mb-5 py-2">
-    <button  [routerLink]="['../../']" class="btn btn-warning">All Rooms</button>
+  <button [routerLink]="['../../']" class="btn btn-warning">All Rooms</button>
 
-<section class="flex justify-between items-center w-48">
-    <p>View: </p>
+  <section class="flex justify-between items-center w-48">
+    <p>View:</p>
     <button class="btn btn-primary">Day</button>
-    <button [routerLink]="['../../week', 3]"  class="btn btn-outline">Week</button>
-</section> 
-
+    <button [routerLink]="['../../week', 3]" class="btn btn-outline">
+      Week
+    </button>
+  </section>
 </section>
 
 <div class="flex">
+  <div class="w-1/3 mx-5">
+    <select
+      (change)="navigateToPage($event)"
+      class="form-select form-select-lg mb-3 appearance-none block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 mt-5 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+      aria-label=".form-select-lg example"
+    >
+      <option
+        *ngFor="let day of getNextWeekDates()"
+        [selected]="selectDate(day, date)"
+        [value]="day"
+      >
+        Date: {{ day | date }}
+      </option>
+    </select>
 
-    <div class="w-1/3 mx-5">
-        <select class="form-select form-select-lg mb-3
-        appearance-none
-        block
-        w-full
-        px-4
-        py-2
-        text-xl
-        font-normal
-        text-gray-700
-        bg-white bg-clip-padding bg-no-repeat
-        border border-solid border-gray-300
-        rounded
-        transition
-        ease-in-out
-        m-0
-        mt-5
-        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label=".form-select-lg example">
-          <option value="today" selected>October 4 (Today)</option>
-          <option value="5">October 5</option> 
-          <option value="6">October 6</option> 
-          <option value="7">October 7</option> 
-          <option value="8">October 8</option> 
-          <option value="9">October 9</option> 
-          <option value="10">October 10</option> 
-      </select>
+    <div>
+      <p class="hidden bg-green-500"></p>
+      <table
+        *ngIf="dailyEvents | async; else loading"
+        class="w-full text-center"
+      >
+        <tr class="bg-purple-700 text-white">
+          <th>Time</th>
+          <th>Status</th>
+        </tr>
+        <tr
+          class="border-b"
+          [ngClass]="getClassOf(time_slot.status)"
+          *ngFor="let time_slot of time"
+          (click)="selectTimeslot(time_slot)"
+        >
+          <th class="py-2">{{ time_slot.name }}</th>
+          <td class="py-2">{{ time_slot.status }}</td>
+        </tr>
+      </table>
 
-      <div>
-        <table class="w-full text-center">
-            <tr class="bg-red-900 text-white">
-                <!-- <th></th> -->
-                <th>Time</th>
-                <th>Status</th> 
-                <!-- <th>Options</th>  -->
-            </tr>
-            <tr class="border-b" [ngClass]="getClassOf(time_slot.status)" *ngFor="let time_slot of time">
-                <!-- <th class="py-2"></th> -->
-                <th class="py-2">{{time_slot.name}}</th>
-                <td class="py-2">{{time_slot.status}}</td> 
-                <!-- <td class="py-2">
-                  <button *ngIf="time_slot.status == 'Open'"  mat-button (click)="openDialog()" button class="btn">Reserve</button>  
-                </td>  -->
-            </tr>
-        </table>
-      </div>
+      <ng-template #loading>
+        <app-loading></app-loading>
+      </ng-template>
     </div>
-    <div class="w-2/3 mx-5">
-        <h2 class="text-center mt-3  text-2xl">Room Details</h2>
-
-        <div class="border-2 mt-9 border-gray-900 rounded-sm p-5 bg-stone-100 flex flex-wrap text-black">
-            <p class="w-1/3">Room: 330 </p>
-            <p class="w-1/3">Seats: 13 </p>
-            <p class="w-1/3">Seating Type: Fixed </p>
-            <p class="w-1/3">Lectern: Anchored </p>
-            <p class="w-1/3">Level: Lower Level </p>
-            <p class="w-1/3">Windows: Available </p>
-        </div>
-        <p class="w-full py-3 bg-purple-900 px-5"><span class="text-white">Amenities:</span>  <span class="bg-gray-100 p-2 border-2 border-gray-900 mx-2 text-gray-900">Projector</span> <span class="bg-gray-100 p-2 border-2 border-gray-900 mx-2 text-gray-900">White board</span> <span class="bg-gray-100 p-2 border-2 border-gray-900 mx-2 text-gray-900">Speakers</span> <span class="bg-gray-100 p-2 border-2 border-gray-900 mx-2 text-gray-900">Microphones</span> </p>
-       
-        <form class="bg-slate-200 p-3 text-black" [formGroup]="requestForm" (ngSubmit)="postRequest(requestForm.value)">
-            <h2 class="text-center mt-3 text-2xl">Reserve Room</h2>
-            
-           <label class="flex mx-auto my-2 w-7/12 items-center" for="roomNumber"><span class="font-bold  w-20">Room:</span>  <select formControlName="room" id="roomNumber" class="form-select form-select-lg ml-3
-            appearance-none
-            block 
-            w-5/6
-            px-4
-            py-2
-            text-xl
-            font-normal
-            text-gray-700
-            bg-white bg-clip-padding bg-no-repeat
-            border border-solid border-gray-300
-            rounded
-            transition
-            ease-in-out  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label=".form-select-lg example">
-              <option value="today" selected>{{room}}</option>  
-          </select></label>
-
-          <label class="flex mx-auto my-2 w-7/12 items-center" for="fromTime"><span class="font-bold w-20">From:</span>  <select id="fromTime" formControlName="start_time" class="form-select form-select-lg ml-3
-            appearance-none
-            block 
-            w-5/6
-            px-4
-            py-2
-            text-xl
-            font-normal
-            text-gray-700
-            bg-white bg-clip-padding bg-no-repeat
-            border border-solid border-gray-300
-            rounded
-            transition
-            ease-in-out
-       
-            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label=".form-select-lg example">
-              <option value="today" selected>Select Time</option>
-              <option *ngFor="let time_slot of time" [value]="time_slot.name">{{time_slot.name}}</option>  
-          </select></label>
-
-          <label class="flex mx-auto my-2 w-7/12 items-center" for="duration"><span class="font-bold w-20">Duration:</span>  <select id="duration" formControlName="duration" class="form-select form-select-lg ml-3
-            appearance-none
-            block 
-            w-5/6
-            px-4
-            py-2
-            text-xl
-            font-normal
-            text-gray-700
-            bg-white bg-clip-padding bg-no-repeat
-            border border-solid border-gray-300
-            rounded
-            transition
-            ease-in-out
-       
-            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label=".form-select-lg example">
-              <option value="today" selected>Select Duration</option>
-              <option  [value]="15">15 minutes</option>  
-              <option  [value]="30">30 minutes</option>  
-              <option  [value]="45">45 minutes</option>  
-              <option  [value]="60">1 hour</option>  
-              <option  [value]="75">1 hour 15 minutes</option>  
-              <option  [value]="90">1 hour 30 minutes</option>  
-              <option  [value]="105">1 hour 45 minutes</option>  
-              <option  [value]="120">2 hours</option>  
-              <option  [value]="135">2 hours 15 minutes</option>  
-              <option  [value]="150">2 hours 30 minutes</option>  
-              <option  [value]="165">2 hours 45 minutes</option>  
-              <option  [value]="180">3 hours</option>  
-              <option  [value]="195">3 hours 15 minutes</option>  
-              <option  [value]="210">3 hours 30 minutes</option>  
-          </select></label>
-
-
-          <label class="flex mx-auto my-2 w-7/12 items-center" for="requestType"><span class="font-bold w-20">Type:</span>  <select formControlName="type" id="requestType" class="form-select form-select-lg ml-3
-            appearance-none
-            block 
-            w-5/6
-            px-4
-            py-2
-            text-xl
-            font-normal
-            text-gray-700
-            bg-white bg-clip-padding bg-no-repeat
-            border border-solid border-gray-300
-            rounded
-            transition
-            ease-in-out
-       
-            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label=".form-select-lg example">
-              <option value="today" selected>Reservation Type</option>
-              <option  [value]="'Class'">Class/ Lecture</option>  
-              <option  [value]="'Meeting'">Meeting</option>  
-              <option  [value]="'Event'">Event</option>  
-              <option  [value]="'Maintainence'">Maintainence</option>   
-              <option  [value]="'Workshop'">Workshop</option>   
-          </select></label>
-
-          <div class="text-center"><button class="btn btn-success">Make Reservation</button></div>
-        </form>
-
-        <h2 class="text-center mt-3  text-2xl">Room Photos</h2>
-
-        <div class="photos flex flex-wrap mx-auto w-4/5 bg-black">
-            <img class="w-2/5 m-2" src="assets/images/image 1.jpg" alt="" srcset="">
-            <img class="w-2/5 m-2" src="assets/images/image 2.jpg" alt="" srcset="">
-            <img class="w-2/5 m-2" src="assets/images/image 3.jpg" alt="" srcset="">
-            <img class="w-2/5 m-2" src="assets/images/image 4.jpg" alt="" srcset="">
-            <img class="w-2/5 m-2" src="assets/images/image 5.jpg" alt="" srcset=""> 
-        </div>
+  </div>
+  <div class="w-2/3 mx-5">
+    <h2 class="text-center mt-3 text-2xl">Room Details</h2>
  
-    </div> 
+    <div
+      class="border-2 mt-9 border-gray-900 rounded-sm p-5 bg-stone-100 flex flex-wrap text-black"
+    >
+      <p class="w-1/2">Room: {{roomDetails.room_name}}</p>
+      <p class="w-1/2">Seats: {{roomDetails.capacity}}</p> 
+      <p class="w-1/2">Level: {{roomDetails._level.name}}</p>
+      <p class="w-1/2">Windows:  {{roomDetails.windows ? 'Avalable': 'None'}} </p>
+    </div>
+    <p class="w-full py-3 bg-purple-900 px-5">
+      <span class="text-white">Amenities:</span>
+      <span *ngFor="let feature of roomDetails.features" class="bg-gray-100 p-2 border-2 border-gray-900 mx-2 text-gray-900">{{feature[0].name }}</span>
+
+    </p>
+
+    <form
+      class="bg-slate-200 p-3 text-black"
+      [formGroup]="requestForm"
+      (ngSubmit)="postRequest(requestForm.value)"
+    >
+      <h2 class="text-center mt-3 text-2xl">Reserve Room</h2>
+
+   
+
+      <label class="flex mx-auto my-2 w-7/12 items-center" for="fromTime"
+        ><span class="font-bold w-20">From:</span>
+        <select
+          id="fromTime"
+          formControlName="start"
+          class="form-select form-select-lg ml-3 appearance-none block w-5/6 px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          aria-label=".form-select-lg example"
+        >
+          <!-- <option value="today" selected>Select Time</option> -->
+          <option *ngFor="let time_slot of time" [value]="time_slot.name">
+            {{ time_slot.name }}
+          </option>
+        </select></label
+      >
+
+      <label class="flex mx-auto my-2 w-7/12 items-center" for="duration"
+        ><span class="font-bold w-20">Duration:</span>
+        <select
+          (change)="setEndTime($event)"
+          id="duration"
+          formControlName="duration"
+          class="form-select form-select-lg ml-3 appearance-none block w-5/6 px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          aria-label=".form-select-lg example"
+        >
+          <option value="today" selected>Select Duration</option>
+          <option [value]="15">15 minutes</option>
+          <option [value]="30">30 minutes</option>
+          <option [value]="45">45 minutes</option>
+          <option [value]="60">1 hour</option>
+          <option [value]="75">1 hour 15 minutes</option>
+          <option [value]="90">1 hour 30 minutes</option>
+          <option [value]="105">1 hour 45 minutes</option>
+          <option [value]="120">2 hours</option>
+          <option [value]="135">2 hours 15 minutes</option>
+          <option [value]="150">2 hours 30 minutes</option>
+          <option [value]="165">2 hours 45 minutes</option>
+          <option [value]="180">3 hours</option>
+          <option [value]="195">3 hours 15 minutes</option>
+          <option [value]="210">3 hours 30 minutes</option>
+        </select></label
+      >
+
+      <label class="flex mx-auto my-2 w-7/12 items-center" for="endTime"
+        ><span class="font-bold w-20">End:</span>
+        <div
+          id="endTime"
+          class="form-select form-select-lg ml-3 appearance-none block w-5/6 px-4 py-2 text-xl font-normal bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out focus:outline-none"
+          aria-label=".form-select-lg-1"
+        >
+        <p>{{ requestForm.controls.end.value }}</p>
+        </div></label
+      >
+
+      <label class="flex mx-auto my-2 w-7/12 items-center" for="requestType"
+        ><span class="font-bold w-20">Request:</span>
+        <select
+          name="requestType"
+          formControlName="purpose"
+          id="requestType"
+          class="form-select form-select-lg ml-3 appearance-none block w-5/6 px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          aria-label=".form-select-lg-2"
+        >
+          <option value="" [selected]="true">Reservation Type</option>
+          <option value="Class">Class/ Lecture</option>
+          <option value="Meeting">Meeting</option>
+          <option value="Event">Event</option>
+          <option value="Maintainence">Maintainence</option>
+          <option value="Workshop">Workshop</option>
+        </select></label
+      >
+
+      <div class="text-center">
+        <button class="btn btn-success">Make Reservation</button>
+      </div>
+    </form>
+
+    <h2 class="text-center mt-3 text-2xl">Room Photos</h2>
+
+    <div class="photos flex flex-wrap mx-auto w-4/5 bg-black">
+      <img *ngFor="let photo of roomDetails.room_photos" class="w-2/5 m-2" [src]="photo.url" alt="" srcset="" /> 
+    </div>
+  </div>
 </div>

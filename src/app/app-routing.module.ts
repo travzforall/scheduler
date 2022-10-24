@@ -31,7 +31,7 @@ const routes: Routes = [
     component: SettingsComponent,
   },
   {
-    path: 'room/:id',
+    path: 'room/:id/:date',
     component: ViewRoomComponent,
   },
   {

@@ -24,6 +24,7 @@ import { SingleLevelComponent } from './level/single-level/single-level.componen
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { LoadingComponent } from './feature/loading/loading.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; 
+ 
 
 @NgModule({
   declarations: [
@@ -48,7 +49,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatDialogModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-    FontAwesomeModule
+    FontAwesomeModule 
   ],
   providers: [
     LevelService,

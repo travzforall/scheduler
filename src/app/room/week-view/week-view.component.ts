@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { STATUS } from '../view-room/view-room.component';
 
 @Component({
   selector: 'app-week-view',
   templateUrl: './week-view.component.html',
-  styleUrls: ['./week-view.component.scss']
+  styleUrls: ['./week-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WeekViewComponent implements OnInit {
 
